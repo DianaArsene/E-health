@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 11 Iun 2018 la 19:22
+-- Generation Time: 11 Iun 2018 la 22:10
 -- Versiune server: 10.1.28-MariaDB
 -- PHP Version: 7.1.11
 
@@ -83,6 +83,15 @@ CREATE TABLE `utilizatori` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Salvarea datelor din tabel `utilizatori`
+--
+
+INSERT INTO `utilizatori` (`Id`, `Nume`, `Prenume`, `Telefon`, `Cnp`, `Email`, `Varsta`, `Parola`, `Status`, `Tip`) VALUES
+(1, 'Popescu', 'Ionut', 975634264, 2147483647, 'popescu_ion@gmail.com', 35, '123qweasdzxc', 0, 1),
+(2, 'Ionescu', 'Daniela', 957352749, 2147483647, 'danielapop@yahoo.com', 22, '123qwe', 0, 2),
+(3, 'admin', 'admin', 0, 0, 'admin@gmail.com', 45, '12345678', 0, 0);
+
+--
 -- Indexes for dumped tables
 --
 
@@ -140,7 +149,7 @@ ALTER TABLE `tip_analize`
 -- AUTO_INCREMENT for table `utilizatori`
 --
 ALTER TABLE `utilizatori`
-  MODIFY `Id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restrictii pentru tabele sterse
