@@ -20,30 +20,28 @@ if (isset($_POST['login_user'])) {
   if (empty($parola)) { array_push($errors, "Parola necompletata!"); }
   // first check the database to make sure 
   // a user does not already exist with the same username and/or email
-  $user_check_query = "SELECT * FROM utilizatori WHERE CNP='$cnp' and Parola='$parola'";
+  $user_check_query = "SELECT * FROM utilizatori WHERE Cnp='$cnp' and Parola='$parola'";
   $result = mysqli_query($db, $user_check_query);
   $user = mysqli_fetch_assoc($result);
-  
-  if ($user) { // if user exists
-    if ($user['cnp'] === $cnp and $user['parola'] === $parola ) {
+  if ($user != null) { // if user exists
       header('location: index.php');
-    }
+  }else{
+	  echo "invalid data";
   }
 }
 ?>
 <html>
 	<head>
 		<link rel="stylesheet" href="assets/css/style.css" type="text/css">
-		<script src="node_modules/jquery-captcha/dist/jquery-captcha.min.js"></script>
 		<script type="text/javascript" src="assets/js/libs/jquery-3.3.1.min.js"></script>	
 		<script type="text/javascript" src="assets/js/custom/script.js"></script>	
 	</head>
 	<body>
 		<div class="login-page">
 		  <div class="form">
-			<form class="login-form">
-			  <input type="text" placeholder="CNP"/>
-			  <input type="password" placeholder="Parola"/>
+			<form class="login-form" method="post">
+			  <input type="text" name="cnp" placeholder="CNP"/>
+			  <input type="password" name="parola" placeholder="Parola"/>
 			  <button type="submit" class="btn" name="login_user">login</button>
 			  <p class="message">Nu aveti cont? <a href="register.php">Creare cont</a></p>
 			</form>

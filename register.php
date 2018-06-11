@@ -61,7 +61,7 @@ if (isset($_POST['create_user'])) {
 
   // Finally, register user if there are no errors in the form
   if (count($errors) == 0) {
-  	$password = md5($password_1);//encrypt the password before saving in the database
+  	$parola = md5($confirm_parola);//encrypt the password before saving in the database
   	$query = "INSERT INTO utilizatori (nume, prenume, telefon, cnp, email, varsta, parola, tip) 
   			  VALUES('$nume', '$prenume', '$telefon','$cnp','$email','$varsta','$parola' ,'$usertype')";
   	mysqli_query($db, $query);
