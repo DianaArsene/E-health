@@ -10,15 +10,11 @@ $db = mysqli_connect('localhost', 'root', '', 'ehealth');
 if (isset($_POST['upload_data'])) {
 	// receive all input values from the form
 	$tip_analiza = $_POST['tipAnaliza'];
-	$descriere_analiza = $_POST['descriere'];
+	$valoare = $_POST['valoare'];
 	$cnp = $_POST['cnp'];
 	//echo  $tip_analiza . ' ' . $descriere_analiza . ' ' . $cnp . '<br />';
 
-	$query = "INSERT INTO tip_analize (nume, descriere) 
-			  VALUES('$tip_analiza', '$descriere_analiza')";
-	$result = mysqli_query($db, $query);
-
-	$res = mysqli_query($db, "SELECT Id_tip_analiza, Status
+	$res = mysqli_query($db, "SELECT Id, Id_tip_analiza, Id_medic
 							  FROM programari 
 								WHERE Id_pacient IN (SELECT Id FROM utilizatori WHERE Cnp = '$cnp')");
 	if($res) {
@@ -34,8 +30,11 @@ if (isset($_POST['upload_data'])) {
 	
 	while($rows = mysqli_fetch_row($res)) {
 		//$rows[0] = '1';
-		$res2 = mysqli_query($db,"UPDATE programari SET Status='1' WHERE id='$rows[0]'");
-		/*if($res2) {
+		$res2 = mysqli_query($db,"UPDATE programari SET Status='1' WHERE id='$rows[1]'");
+		$res3 = mysqli_query($db,
+			"INSERT INTO rezultate_analize (Id_programare,Rezultat_analize,Interpretare,Observatii) 
+			 VALUES('$rows[0]', '$valoare', '', '')");
+		/*if($res3) {
 			echo "Succes"; 
       	} else {
       		echo "Error2"; 
@@ -69,9 +68,9 @@ if (isset($_POST['upload_data'])) {
 					<div class="col-sm-6">
 						<label>Tip Analiza:</label>
 						<input type="text" class="form-control" name="tipAnaliza">
-						<label>Descriere:</label>
-						<textarea class="form-control" rows="5" id="comment" name="descriere">
-						</textarea>
+						<label>Valoare Proba Colectata:</label>
+						<input type="text" class="form-control" name="valoare">
+						
 						
 					</div>
 					<div class="col-sm-6">
