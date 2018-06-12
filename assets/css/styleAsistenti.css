@@ -14,7 +14,14 @@
 	width: 70% !important;
 	margin: 20 auto !important;
 }
-
+.paddingClass2 {
+	width: 60% !important;
+	margin: 20 auto !important;
+}
+.paddingClassIndex {
+	width: 80% !important;
+	margin: 20 auto !important;
+}
 .btnIncarcaAnalize2 {
 	margin-top: 103px !important;
 }
