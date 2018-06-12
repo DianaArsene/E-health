@@ -6,7 +6,7 @@ $errors = array();
 
 // connect to the database
 $db = mysqli_connect('localhost', 'root', '', 'ehealth');
-// REGISTER USER
+// UPLOAD DATA
 if (isset($_POST['upload_data'])) {
 	// receive all input values from the form
 	$tip_analiza = $_POST['tipAnaliza'];
@@ -47,6 +47,7 @@ if (isset($_POST['upload_data'])) {
 
 <html>
 <head>
+	<title>Asistenti</title>
 	<link rel="stylesheet" href="assets/css/styleAsistenti.css" type="text/css">
 	<script type="text/javascript" src="assets/js/libs/jquery-3.3.1.min.js"></script>	
 	<!--<script type="text/javascript" src="assets/js/custom/script.js"></script>	-->
@@ -68,15 +69,18 @@ if (isset($_POST['upload_data'])) {
 					<div class="col-sm-6">
 						<label>Tip Analiza:</label>
 						<input type="text" class="form-control" name="tipAnaliza">
-						<label>Valoare Proba Colectata:</label>
-						<input type="text" class="form-control" name="valoare">
-						
-						
 					</div>
 					<div class="col-sm-6">
 						<label>CNP Pacient:</label>
 						<input type="number" class="form-control" name="cnp">
-						
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<label>Valoare Proba Colectata:</label>
+						<input type="text" class="form-control" name="valoare">
+					</div>
+					<div class="col-sm-6">
 						<button type="submit" class="btn btn-primary btnIncarcaAnalize" name="upload_data">Incarca Detalii Analize</button>
 					</div>
 				</div>
