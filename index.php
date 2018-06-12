@@ -1,17 +1,15 @@
 <?php
 
-// initializing variables
-$cnp = "";
 // connect to the database
 $db = mysqli_connect('localhost', 'root', '', 'ehealth');
 //permite acces => Schimba status in 1
-if (isset($_POST['allowAcc'])) {
+/*if (isset($_POST['allowAcc'])) {
 	///$utilizator = $_POST['utilizator1'];
 	///echo ($utilizator);
 	
 } else if (isset($_POST['delete'])) {
 
-}
+}*/
 
 ?>
 
@@ -36,45 +34,79 @@ if (isset($_POST['allowAcc'])) {
 		<div class="form paddingClassIndex">
 			<form class="login-form" method="post">
 				<table id="example" class="table table-striped" style="width:100%">
-				        <thead>
-				            <tr>
-				            	<th>Id</th>
-				                <th>Nume</th>
-				                <th>Prenume</th>
-				                <th>Telefon</th>
-				                <th>CNP</th>
-				                <th>Email</th>
-				                <th>Varsta</th>
-				                <th>Tip</th>
-				                <th>Validare</th>
-				            </tr>
-				        </thead>
-				        <tbody>
-				            
-				            	<?php 
-				            		$res = mysqli_query($db, "SELECT Id, Nume, Prenume, Telefon, CNP, Email, Varsta, Tip
-							  			FROM utilizatori WHERE Status = 0");
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Nume</th>
+							<th>Prenume</th>
+							<th>Telefon</th>
+							<th>CNP</th>
+							<th>Email</th>
+							<th>Varsta</th>
+							<th>Tip</th>
+							<th>Validare</th>
+						</tr>
+					</thead>
+					<tbody>
 
-				            		while($rows = mysqli_fetch_row($res)) {
-				            			
-				            			?> <tr>
-				            			<?php
-				            			$i = 0;
-				            			foreach ($rows as $data){
-				            				$name2 = 'utilizator'.$i;
-				            	?>
-				                <td name='<?php echo $name2; ?>'><?php echo $data; $i++; }?></td>
-				                <td>
-				                	<button type='submit' class='btn btn-primary' name='allowAcc'>Permite acces</button>
-                					<button type='submit' class='btn btn-danger' name='delete'>Elimina din lista</button>
-				                </td>
-				                <?php } ?>
-				            </tr>				           
-				        </tbody>
-				    </table>
-			</form>
+						<?php 
+						$res = mysqli_query($db, "SELECT Id, Nume, Prenume, Telefon, CNP, Email, Varsta, Tip
+							FROM utilizatori WHERE Status = 0");
+
+						while($rows = mysqli_fetch_row($res)) {
+
+							?> <tr>
+							<?php
+
+							foreach ($rows as $data){
+				            				//$name2 = 'utilizator'.$i;
+								?>
+								<td><?php echo $data;  }?></td>
+								<td>
+									<button id='<?php echo $rows[0]; ?>' type='submit' class='btn btn-primary' onClick='allowAcc(this.id)'>Permite acces</button>
+									<button id='<?php echo $rows[0]; ?>' type='submit' class='btn btn-danger' onClick='deleteAcc(this.id)'>Elimina din lista</button>
+								</td>
+								<?php } ?>
+							</tr>				           
+						</tbody>
+					</table>
+				</form>
+
+			</div>
 		</div>
 	</div>
-</div>
+
+	<script type="text/javascript">
+	function allowAcc(clicked_id)
+	{
+		$.ajax({
+			type: 'POST',
+			url: 'helperUpdate.php',
+			data: { Id:clicked_id},
+			success: function(result){ 
+				if(result == 'Succes')
+					alert('Utilizatorul a primit permisiunile necesare');
+				else
+					alert('Permisiunile nu au fost acordate');
+			}
+		});
+	}
+
+	function deleteAcc(clicked_id)
+	{
+		alert(clicked_id);
+		$.ajax({
+			type: 'POST',
+			url: 'helperDelete.php',
+			data: { Id:clicked_id},
+			success: function(result){ 
+				if(result == 'Succes')
+					alert('Utilizator a fost sters');
+				else
+					alert('Stergerea esuata!');
+			}
+		});
+	}
+	</script>
 </body>
 </html>
