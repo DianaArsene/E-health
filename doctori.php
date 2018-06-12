@@ -1,5 +1,6 @@
 <html>
 <head>
+	<title>Doctori</title>
 	<link rel="stylesheet" href="assets/css/styleAsistenti.css" type="text/css">
 	<script type="text/javascript" src="assets/js/libs/jquery-3.3.1.min.js"></script>	
 
