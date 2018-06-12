@@ -1,7 +1,13 @@
 .imgBanner {
 	width: 100% !important;
 	height: 50% !important;
-	margin: 0!important;
+}
+
+.imgBanner2 {
+    display: block;
+    width: 90%;
+    height: 60%;
+    margin: 0 auto !important;
 }
 
 .paddingClass {
@@ -9,6 +15,10 @@
 	margin: 20 auto !important;
 }
 
-.btnIncarcaAnalize {
+.btnIncarcaAnalize2 {
 	margin-top: 103px !important;
+}
+
+.btnIncarcaAnalize {
+	margin-top: 25px;
 }
