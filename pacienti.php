@@ -9,35 +9,39 @@ if (isset($_POST['upload_data'])) {
 	$nume = $numeDoctor[0];
 	$prenume = $numeDoctor[1];
 	$data = $_POST['data'];
+	$dateTime = new DateTime($data);
+	$formatted_date=date_format ( $dateTime, 'Y-m-d' );
+	//echo $formatted_date;
 	$ora = $_POST['ora'];
 
-	echo 'tip: '. $tip . ' nume: '. $nume . ' prenume: ' . $prenume . ' data: ' . $data . ' ora: ' . $ora;
+	//echo 'tip: '. $tip . ' nume: '. $nume . ' prenume: ' . $prenume . ' data: ' . $data . ' ora: ' . $ora;
 	$medic = mysqli_query($db, "SELECT Id FROM utilizatori 
 								WHERE Nume = '$nume' AND Prenume = '$prenume'");
 	$medicId = mysqli_fetch_row($medic);
 	$medicIdInt = (int)$medicId[0];
-	echo ' medicId: ' . $medicIdInt;
+	//echo ' medicId: ' . $medicIdInt;
 	$tipAnaliza = mysqli_query($db, "SELECT Id FROM tip_analize 
 								WHERE Nume='$tip'");
 	$tipAnalizaId = mysqli_fetch_row($tipAnaliza);
 	$tipAnalizaIdInt = (int)$tipAnalizaId[0];
-	echo ' tipAnalizaId: ' . $tipAnalizaIdInt;
+	//echo ' tipAnalizaId: ' . $tipAnalizaIdInt;
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// ID pacient trebuie luat dinamic, in functie de CNP-ul cu care s-a logat!!!!!!!
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	$programare = mysqli_query($db,
 			"INSERT INTO programari (Id_pacient,Id_tip_analiza,Data, Id_medic, Status) 
-			 VALUES(1, $tipAnalizaIdInt, '' , $medicIdInt, 0)");
+			 VALUES(1, $tipAnalizaIdInt, '$formatted_date', $medicIdInt, 0)");
 	if($programare) {
 		$type = "success";
 		$text = "Programarea dumneavoastra a fost inregistrata cu succes!";
 	} else {
 		$type = "danger";
-      	$text = "Programarea dumneavoastra nu a fost salvata";
+		$text = "Programarea dumneavoastra nu a fost salvata.";
+		//echo("Error description: " . mysqli_error($db));
 	}
 	echo "<div class=\"alert alert-".$type."\" role=\"alert\">
-        					<p>".$text."</p>
+       					<p>".$text."</p>
       					</div>";
 }
 ?>
