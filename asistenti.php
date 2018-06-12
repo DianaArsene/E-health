@@ -12,29 +12,37 @@ if (isset($_POST['upload_data'])) {
 	$tip_analiza = $_POST['tipAnaliza'];
 	$descriere_analiza = $_POST['descriere'];
 	$cnp = $_POST['cnp'];
-	echo  $tip_analiza . ' ' . $descriere_analiza . ' ' . $cnp . '<br />';
+	//echo  $tip_analiza . ' ' . $descriere_analiza . ' ' . $cnp . '<br />';
 
 	$query = "INSERT INTO tip_analize (nume, descriere) 
 			  VALUES('$tip_analiza', '$descriere_analiza')";
 	$result = mysqli_query($db, $query);
-	
-
 
 	$res = mysqli_query($db, "SELECT Id_tip_analiza, Status
 							  FROM programari 
 								WHERE Id_pacient IN (SELECT Id FROM utilizatori WHERE Cnp = '$cnp')");
+	if($res) {
+		$type = "success";
+		$text = "Detaliile au fost introduse in baza de date!";
+	} else {
+		$type = "danger";
+      	$text = "Datele nu au fost introduse.";
+	}
+	echo "<div class=\"alert alert-".$type."\" role=\"alert\">
+        					<p>".$text."</p>
+      					</div>";
+	
 	while($rows = mysqli_fetch_row($res)) {
 		//$rows[0] = '1';
 		$res2 = mysqli_query($db,"UPDATE programari SET Status='1' WHERE id='$rows[0]'");
-		if($res2) echo "ok < br />";
-		else echo 'fail :( < br />';
+		/*if($res2) {
+			echo "Succes"; 
+      	} else {
+      		echo "Error2"; 
+		}*/
+		
 	}
 
-	//print_r(expression)
-	if($res)
-		echo "Success2";
-	else
-		echo "Error2";
 }
 ?>
 
@@ -62,7 +70,8 @@ if (isset($_POST['upload_data'])) {
 						<label>Tip Analiza:</label>
 						<input type="text" class="form-control" name="tipAnaliza">
 						<label>Descriere:</label>
-						<input type="text" class="form-control" name="descriere">
+						<textarea class="form-control" rows="5" id="comment" name="descriere">
+						</textarea>
 						
 					</div>
 					<div class="col-sm-6">
