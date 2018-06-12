@@ -1,9 +1,5 @@
 <?php
 
-// initializing variables
-$cnp = "";
-$errors = array(); 
-
 // connect to the database
 $db = mysqli_connect('localhost', 'root', '', 'ehealth');
 // UPLOAD DATA
@@ -67,8 +63,17 @@ if (isset($_POST['upload_data'])) {
 			<form class="login-form" method="post">
 				<div class="row">
 					<div class="col-sm-6">
-						<label>Tip Analiza:</label>
-						<input type="text" class="form-control" name="tipAnaliza">
+						<label for="sel1">Tip de analiza:</label>
+						<select class="form-control" id="sel1" name="tip_analize">
+							<option></option>
+							<?php
+								$res = mysqli_query($db, "SELECT Nume, Descriere
+						  								FROM tip_analize");
+								while($rows = mysqli_fetch_row($res)){ ?>
+									<option> <?php echo ($rows[0]); ?> </option>
+							<?php }
+							?>
+						</select>
 					</div>
 					<div class="col-sm-6">
 						<label>CNP Pacient:</label>
@@ -78,7 +83,18 @@ if (isset($_POST['upload_data'])) {
 				<div class="row">
 					<div class="col-sm-6">
 						<label>Valoare Proba Colectata:</label>
-						<input type="text" class="form-control" name="valoare">
+						<select class="form-control" id="sel1" name="descriere">
+							<option></option>
+							<?php
+								$res = mysqli_query($db, "SELECT Descriere
+						  								FROM tip_analize");
+								while($rows = mysqli_fetch_row($res)){ ?>
+									<option> <?php echo ($rows[0]); ?> </option>
+							<?php }
+							?>
+
+
+						</select>
 					</div>
 					<div class="col-sm-6">
 						<button type="submit" class="btn btn-primary btnIncarcaAnalize" name="upload_data">Incarca Detalii Analize</button>
