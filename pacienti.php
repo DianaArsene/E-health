@@ -27,8 +27,8 @@ if (isset($_POST['upload_data'])) {
 	// ID pacient trebuie luat dinamic, in functie de CNP-ul cu care s-a logat!!!!!!!
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	$programare = mysqli_query($db,
-			"INSERT INTO programari (Id_pacient,Id_tip_analiza,Data,Id_medic, Status) 
-			 VALUES(1, $tipAnalizaIdInt, '', tipAnalizaIdInt, 0)");
+			"INSERT INTO programari (Id_pacient,Id_tip_analiza,Data, Id_medic, Status) 
+			 VALUES(1, $tipAnalizaIdInt, '' , $medicIdInt, 0)");
 	if($programare) {
 		$type = "success";
 		$text = "Programarea dumneavoastra a fost inregistrata cu succes!";
