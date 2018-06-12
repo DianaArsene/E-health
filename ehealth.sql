@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.4
+-- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 12, 2018 at 11:13 AM
--- Server version: 5.7.14
--- PHP Version: 5.6.25
+-- Generation Time: 12 Iun 2018 la 21:58
+-- Versiune server: 10.1.28-MariaDB
+-- PHP Version: 7.1.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -23,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `programari`
+-- Structura de tabel pentru tabelul `programari`
 --
 
 CREATE TABLE `programari` (
@@ -36,7 +38,7 @@ CREATE TABLE `programari` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `programari`
+-- Salvarea datelor din tabel `programari`
 --
 
 INSERT INTO `programari` (`Id`, `Id_pacient`, `Id_tip_analiza`, `Data`, `Id_medic`, `Status`) VALUES
@@ -45,7 +47,7 @@ INSERT INTO `programari` (`Id`, `Id_pacient`, `Id_tip_analiza`, `Data`, `Id_medi
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rezultate_analize`
+-- Structura de tabel pentru tabelul `rezultate_analize`
 --
 
 CREATE TABLE `rezultate_analize` (
@@ -59,7 +61,7 @@ CREATE TABLE `rezultate_analize` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tip_analize`
+-- Structura de tabel pentru tabelul `tip_analize`
 --
 
 CREATE TABLE `tip_analize` (
@@ -69,16 +71,30 @@ CREATE TABLE `tip_analize` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tip_analize`
+-- Salvarea datelor din tabel `tip_analize`
 --
 
 INSERT INTO `tip_analize` (`Id`, `Nume`, `Descriere`) VALUES
-(1, 'Colesterol LDL', 'Sub 130mg/dL');
+(1, 'Colesterol LDL', 'Sub 130mg/dL'),
+(19, 'Leucocite', '4-10/ul'),
+(20, 'Limfocite', '1-4/ul'),
+(21, 'Hemoglobina', '11.7-15.5/dl'),
+(22, 'Trombocite', '150-450/ul'),
+(23, 'VSH-Sange', '2-17/mm/h'),
+(24, 'Calciu', '3.5-4.8/dl'),
+(25, 'Glicemie', '70-115/dl'),
+(26, 'Bilirubina', 'Negativ'),
+(27, 'Densitate urina', '1.010-1.030'),
+(28, 'pH', '5-7'),
+(29, 'Fier', '5.5-7.5/dl'),
+(30, 'Potasiu', '10.5-15.5/dl'),
+(31, 'Magneziu', '15.3-19.8/dl'),
+(32, 'Monocite', '0.3-1/ul');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `utilizatori`
+-- Structura de tabel pentru tabelul `utilizatori`
 --
 
 CREATE TABLE `utilizatori` (
@@ -95,14 +111,14 @@ CREATE TABLE `utilizatori` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `utilizatori`
+-- Salvarea datelor din tabel `utilizatori`
 --
 
 INSERT INTO `utilizatori` (`Id`, `Nume`, `Prenume`, `Telefon`, `Cnp`, `Email`, `Varsta`, `Parola`, `Status`, `Tip`) VALUES
-(1, 'Popescu', 'Ionut', '975634264', '2147483647113', 'popescu_ion@gmail.com', '35', '123qweasdzxc', 0, 1),
-(2, 'Ionescu', 'Daniela', '957352749', '2147483643213', 'danielapop@yahoo.com', '22', '123qwe', 0, 2),
+(1, 'Popescu', 'Ionut', '975634264', '2147483647113', 'popescu_ion@gmail.com', '35', '123qweasdzxc', 1, 1),
+(2, 'Ionescu', 'Daniela', '957352749', '2147483643213', 'danielapop@yahoo.com', '22', '123qwe', 1, 2),
 (3, 'admin', 'admin', '0', '0', 'admin@gmail.com', '45', '12345678', 0, 0),
-(5, 'Neacsu', 'Vasile', '0745051804', '1893450233434', 'neacsuv@yahoo.com', '29', 'neacsuv', 0, 3);
+(5, 'Neacsu', 'Vasile', '0745051804', '1893450233434', 'neacsuv@yahoo.com', '29', 'neacsuv', 1, 3);
 
 --
 -- Indexes for dumped tables
@@ -145,27 +161,31 @@ ALTER TABLE `utilizatori`
 --
 ALTER TABLE `programari`
   MODIFY `Id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT for table `rezultate_analize`
 --
 ALTER TABLE `rezultate_analize`
   MODIFY `Id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `tip_analize`
 --
 ALTER TABLE `tip_analize`
-  MODIFY `Id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `Id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+
 --
 -- AUTO_INCREMENT for table `utilizatori`
 --
 ALTER TABLE `utilizatori`
   MODIFY `Id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
 --
--- Constraints for dumped tables
+-- Restrictii pentru tabele sterse
 --
 
 --
--- Constraints for table `programari`
+-- Restrictii pentru tabele `programari`
 --
 ALTER TABLE `programari`
   ADD CONSTRAINT `programari_ibfk_1` FOREIGN KEY (`Id_pacient`) REFERENCES `utilizatori` (`Id`),
@@ -173,10 +193,11 @@ ALTER TABLE `programari`
   ADD CONSTRAINT `programari_ibfk_3` FOREIGN KEY (`Id_medic`) REFERENCES `utilizatori` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `rezultate_analize`
+-- Restrictii pentru tabele `rezultate_analize`
 --
 ALTER TABLE `rezultate_analize`
   ADD CONSTRAINT `rezultate_analize_ibfk_1` FOREIGN KEY (`Id_programare`) REFERENCES `programari` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
