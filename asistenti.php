@@ -64,10 +64,10 @@ if (isset($_POST['upload_data'])) {
 				<div class="row">
 					<div class="col-sm-6">
 						<label for="sel1">Tip de analiza:</label>
-						<select class="form-control" id="sel1" name="tip_analize">
+						<select class="form-control" id="sel1" name="tip_analize" onchange="tipSelectat(this.value)">
 							<option></option>
 							<?php
-								$res = mysqli_query($db, "SELECT Nume, Descriere
+								$res = mysqli_query($db, "SELECT Nume
 						  								FROM tip_analize");
 								while($rows = mysqli_fetch_row($res)){ ?>
 									<option> <?php echo ($rows[0]); ?> </option>
@@ -82,16 +82,12 @@ if (isset($_POST['upload_data'])) {
 				</div>
 				<div class="row">
 					<div class="col-sm-6">
-						<label>Valoare Proba Colectata:</label>
+						<label>Valoare Normala:</label>
 						<select class="form-control" id="sel1" name="descriere">
 							<option></option>
-							<?php
-								$res = mysqli_query($db, "SELECT Descriere
-						  								FROM tip_analize");
-								while($rows = mysqli_fetch_row($res)){ ?>
-									<option> <?php echo ($rows[0]); ?> </option>
-							<?php }
-							?>
+							
+							<option id="descriere"></option>
+							
 
 
 						</select>
@@ -104,5 +100,21 @@ if (isset($_POST['upload_data'])) {
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+	function tipSelectat(tipAnaliza) {
+		//se apeleaza functia pt afisare optiuni valori normale
+		$.ajax({
+			type: 'POST',
+			url: 'helper.php',
+			data: { Tip: tipAnaliza },
+			success: function(result){ 
+
+				document.getElementById("descriere").innerHTML = result;
+	      		//$('#pret').val(result + " lei");
+	      		
+	      	}
+	    });
+	}
+</script>
 </body>
 </html>
