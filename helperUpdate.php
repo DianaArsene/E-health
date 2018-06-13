@@ -4,7 +4,7 @@
 	$id = $_POST['Id'];
 
 	$res = mysqli_query($db,"UPDATE utilizatori SET Status=1 WHERE Id='$id'");
-	if($res) {
+  if($res == true) {
 		echo 'Success';
 	} else {
 		echo 'Err';

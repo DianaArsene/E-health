@@ -99,3 +99,26 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;      
 }
+
+.message_wrapper {
+    position: absolute;
+    text-align: center;
+    top: 5px;
+    z-index: 100;
+    width: 500px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.captcha_wrapper{
+    height: 35px;
+    vertical-align: middle;
+    border: solid 1px grey;
+    background: #f2f2f2;
+    margin-bottom: 10px;
+    text-align: left;
+    padding-left: 15px;
+    padding-top: 5px;
+}
