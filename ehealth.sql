@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.6.5.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 12 Iun 2018 la 21:58
--- Versiune server: 10.1.28-MariaDB
--- PHP Version: 7.1.11
+-- Generation Time: 13 Iun 2018 la 16:22
+-- Versiune server: 10.1.21-MariaDB
+-- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -36,13 +34,6 @@ CREATE TABLE `programari` (
   `Id_medic` int(11) UNSIGNED NOT NULL,
   `Status` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Salvarea datelor din tabel `programari`
---
-
-INSERT INTO `programari` (`Id`, `Id_pacient`, `Id_tip_analiza`, `Data`, `Id_medic`, `Status`) VALUES
-(1, 1, 1, '2018-06-17', 5, 1);
 
 -- --------------------------------------------------------
 
@@ -115,10 +106,11 @@ CREATE TABLE `utilizatori` (
 --
 
 INSERT INTO `utilizatori` (`Id`, `Nume`, `Prenume`, `Telefon`, `Cnp`, `Email`, `Varsta`, `Parola`, `Status`, `Tip`) VALUES
-(1, 'Popescu', 'Ionut', '975634264', '2147483647113', 'popescu_ion@gmail.com', '35', '123qweasdzxc', 1, 1),
-(2, 'Ionescu', 'Daniela', '957352749', '2147483643213', 'danielapop@yahoo.com', '22', '123qwe', 1, 2),
+(1, 'Popescu', 'Ionut', '975634264', '2147483647113', 'popescu_ion@gmail.com', '35', '123qweasdzxc', 0, 1),
+(2, 'Ionescu', 'Daniela', '957352749', '2147483643213', 'danielapop@yahoo.com', '22', '123qwe', 0, 2),
 (3, 'admin', 'admin', '0', '0', 'admin@gmail.com', '45', '12345678', 0, 0),
-(5, 'Neacsu', 'Vasile', '0745051804', '1893450233434', 'neacsuv@yahoo.com', '29', 'neacsuv', 1, 3);
+(8, 'Ion', 'asd', '234', '234234', 'wrweer', '34', '202cb962ac59075b964b07152d234b70', 1, 1),
+(9, 'Dum', 'To', '0788996655', '1890526076635', 'dumto@gmail.com', '23', '202cb962ac59075b964b07152d234b70', 1, 1);
 
 --
 -- Indexes for dumped tables
@@ -161,25 +153,21 @@ ALTER TABLE `utilizatori`
 --
 ALTER TABLE `programari`
   MODIFY `Id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
 --
 -- AUTO_INCREMENT for table `rezultate_analize`
 --
 ALTER TABLE `rezultate_analize`
   MODIFY `Id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `tip_analize`
 --
 ALTER TABLE `tip_analize`
   MODIFY `Id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
-
 --
 -- AUTO_INCREMENT for table `utilizatori`
 --
 ALTER TABLE `utilizatori`
-  MODIFY `Id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
+  MODIFY `Id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- Restrictii pentru tabele sterse
 --
@@ -197,7 +185,6 @@ ALTER TABLE `programari`
 --
 ALTER TABLE `rezultate_analize`
   ADD CONSTRAINT `rezultate_analize_ibfk_1` FOREIGN KEY (`Id_programare`) REFERENCES `programari` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
