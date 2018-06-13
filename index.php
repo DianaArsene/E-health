@@ -64,7 +64,7 @@ $db = mysqli_connect('localhost', 'root', '', 'ehealth');
 								<td><?php echo $data;  }?></td>
 								<td>
 									<button id='<?php echo $rows[0]; ?>' type='submit' class='btn btn-primary' onClick='allowAcc(this.id)'>Permite acces</button>
-									<button id='<?php echo $rows[0]; ?>' type='submit' class='btn btn-danger' onClick='deleteAcc(this.id)'>Elimina din lista</button>
+									<button id='<?php echo ($rows[0] . '1'); ?>' type='submit' class='btn btn-danger' onClick='deleteAcc(this.id)'>Elimina din lista</button>
 								</td>
 								<?php } ?>
 							</tr>				           
@@ -84,26 +84,24 @@ $db = mysqli_connect('localhost', 'root', '', 'ehealth');
 			url: 'helperUpdate.php',
 			data: { Id:clicked_id},
 			success: function(result){ 
-				if(result == 'Succes')
-					alert('Utilizatorul a primit permisiunile necesare');
-				else
-					alert('Permisiunile nu au fost acordate');
+				alert('Utilizatorul a primit permisiunile necesare');
+
 			}
 		});
 	}
 
 	function deleteAcc(clicked_id)
 	{
-		alert(clicked_id);
+		//alert(clicked_id);
 		$.ajax({
 			type: 'POST',
 			url: 'helperDelete.php',
 			data: { Id:clicked_id},
 			success: function(result){ 
-				if(result == 'Succes')
-					alert('Utilizator a fost sters');
-				else
-					alert('Stergerea esuata!');
+
+				alert('Utilizator a fost sters');
+				//location.reload();
+				
 			}
 		});
 	}
