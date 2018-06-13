@@ -58,7 +58,7 @@ if (isset($_POST['create_user'])) {
   			  VALUES('$nume', '$prenume', '$telefon','$cnp','$email','$varsta','$parola' ,'$usertype')";
       mysqli_query($db, $query);
       $_SESSION['messages'] = "Contul a fost creat cu succes !";
-      header('location: login.php');
+      header('location: index.php');
     }
   }
 }

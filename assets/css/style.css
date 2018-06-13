@@ -122,3 +122,20 @@ body {
     padding-left: 15px;
     padding-top: 5px;
 }
+
+.page_menu{
+  float: right;
+  margin: 20px;
+  clear: right;
+}
+
+.page_menu .salut,
+.page_menu .logout{
+float: left;
+width: auto;
+margin-right: 20px;
+}
+
+.page_menu .logout a{
+  color: #ffffff;
+}

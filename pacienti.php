@@ -1,4 +1,10 @@
 <?php
+session_start();
+if(empty($_SESSION["user"])){
+	$_SESSION["login_messages"] = "Va rugam sa va autentificati!";
+	header('location: index.php');
+}
+
 // connect to the database
 $db = mysqli_connect('localhost', 'root', '', 'ehealth');
 
@@ -25,13 +31,10 @@ if (isset($_POST['upload_data'])) {
 	$tipAnalizaId = mysqli_fetch_row($tipAnaliza);
 	$tipAnalizaIdInt = (int)$tipAnalizaId[0];
 	//echo ' tipAnalizaId: ' . $tipAnalizaIdInt;
-
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// ID pacient trebuie luat dinamic, in functie de CNP-ul cu care s-a logat!!!!!!!
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	$user_id = $_SESSION['user']['Id'];
 	$programare = mysqli_query($db,
 			"INSERT INTO programari (Id_pacient,Id_tip_analiza,Data, Id_medic, Status) 
-			 VALUES(1, $tipAnalizaIdInt, '$formatted_date', $medicIdInt, 0)");
+			 VALUES($user_id, $tipAnalizaIdInt, '$formatted_date', $medicIdInt, 0)");
 	if($programare) {
 		$type = "success";
 		$text = "Programarea dumneavoastra a fost inregistrata cu succes!";
@@ -92,15 +95,26 @@ if (isset($_POST['upload_data'])) {
 	</script>
 </head>
 <body>
+	<div class="page_menu">
+	  <div class="salut" >
+		  Salut ! 
+		  <?php 
+		  echo $_SESSION["user"]["Nume"] . " " . $_SESSION["user"]["Prenume"];?>
+	  </div>
+	  <div class="logout">
+	  	<button type="button" class="btn btn-primary" name="logout"><a href="logout.php">Logout</a></button>
+	  </div>
+	</div>
 	<div class="card">
 		<img src="pacienti2.jpg" class="img-fluid imgBanner2">
+		<h2 style="margin: 0 auto;text-align:center;margin-top:20px;">Programare</h2>
 		<div class="form paddingClass2">
 			<form class="login-form" method="post">
 				<div class="row">
 					<div class="col-sm-6">
 						<label for="sel1">Tip de analiza:</label>
 						<select class="form-control" id="sel1" name="tip_analize">
-							<option></option>
+							<option> -- Selectati -- </option>
 							<?php
 								$res = mysqli_query($db, "SELECT Nume
 						  								FROM tip_analize");
@@ -108,8 +122,6 @@ if (isset($_POST['upload_data'])) {
 									<option> <?php echo ($rows[0]); ?> </option>
 							<?php }
 							?>
-
-
 						</select>
 					</div>
 					<div class="col-sm-6">
@@ -123,7 +135,7 @@ if (isset($_POST['upload_data'])) {
 					<div class="col-sm-6">
 						<label for="sel1">Doctor:</label>
 						<select class="form-control" id="sel" name="numeDoctor">
-							<option></option>
+							<option> -- Selectati -- </option>
 							<?php
 								$res = mysqli_query($db, "SELECT Nume, Prenume
 						  								FROM utilizatori 
@@ -140,7 +152,7 @@ if (isset($_POST['upload_data'])) {
 					</div>
 					<div class="col-sm-6">
 						<label for="sel1">Ora:</label>
-						<input type="text" class="timepicker form-control" name="ora"/>
+						<input type="text" class="form-control" name="ora"/>
 					</div>
 
 				</div>

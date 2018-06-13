@@ -1,140 +1,107 @@
 <?php
+session_start();
 
+// initializing variables
+$cnp = "";
+$parola = "";
+$errors = array();
 // connect to the database
 $db = mysqli_connect('localhost', 'root', '', 'ehealth');
-//permite acces => Schimba status in 1
-/*if (isset($_POST['allowAcc'])) {
-	///$utilizator = $_POST['utilizator1'];
-	///echo ($utilizator);
-	
-} else if (isset($_POST['delete'])) {
-
-}*/
-
+// REGISTER USER
+if (isset($_POST['login_user'])) {
+  // receive all input values from the form
+  $cnp = mysqli_real_escape_string($db, $_POST['cnp']);
+  $parola = mysqli_real_escape_string($db, $_POST['parola']);
+  // form validation: ensure that the form is correctly filled ...
+  // by adding (array_push()) corresponding error unto $errors array
+  if (empty($cnp)) {
+    array_push($errors, "CNP necompletat !");
+  }
+  if (empty($parola)) {
+    array_push($errors, "Parola necompletata !");
+  }
+  // first check the database to make sure
+  // a user does not already exist with the same username and/or email
+  if(count($errors) == 0){
+    $user_check_query = "SELECT * FROM utilizatori WHERE Cnp='$cnp' and Parola='".md5($parola)."'";
+    $result = mysqli_query($db, $user_check_query);
+    $user = mysqli_fetch_assoc($result);
+    if ($user != NULL) { // if user exists
+      $_SESSION["user"] = $user;
+      header('location: admin.php');
+    }
+    else {
+      array_push($errors, "CNP sau Parola invalide !");
+    }
+  }
+}
 ?>
 
 <html>
-<head>
-	<title>Admin Page</title>
-	<link rel="stylesheet" href="assets/css/styleAsistenti.css" type="text/css">
+  <head>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css" type="text/css">
 
-	<!-- BOOTSTRAP CDN -->
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
-	<!-- Latest compiled JavaScript -->
-	<script type="text/javascript" src="assets/js/libs/jquery-3.3.1.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<!--END -->
+    <script type="text/javascript"
+            src="assets/js/libs/jquery-3.3.1.min.js"></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/js/custom/script.js"></script>
 
-</head>
-<body>
-	<div class="card">
-		<img src="doctor.jpg" class="img-fluid imgBanner2">
-		<div class="form paddingClassIndex">
-			<form class="login-form" method="post">
-				<table id="example" class="table table-bordered table-hover" style="width:100%">
-					<thead>
-						<tr>
-							<th>Id</th>
-							<th>Nume</th>
-							<th>Prenume</th>
-							<th>Telefon</th>
-							<th>CNP</th>
-							<th>Email</th>
-							<th>Varsta</th>
-							<th>Tip</th>
-							<th>Validare</th>
-						</tr>
-					</thead>
-					<tbody>
+  </head>
+  <body>
+    <?php
+      // Display the successfully register message and unset the variable
+        if(!empty($_SESSION['messages'])){
+          echo "<div class='message_wrapper'>";
+          echo "<div class='alert alert-success alert-dismissible'>";
+          echo "<a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>";
+          echo "<strong>Inregistrare reusita !</strong>";
+          echo "<div>".$_SESSION['messages']."</div>";
+          echo "</div>";
+          echo "</div>";
+          unset($_SESSION['messages']);
+        }
+    ?>
+    <?php
+      // Display the successfully register message and unset the variable
+        if(!empty($_SESSION['login_messages'])){
+          echo "<div class='message_wrapper'>";
+          echo "<div class='alert alert-danger alert-dismissible'>";
+          echo "<a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>";
+          echo "<strong>Acces restrictionat !</strong>";
+          echo "<div>".$_SESSION['login_messages']."</div>";
+          echo "</div>";
+          echo "</div>";
+          unset($_SESSION['login_messages']);
+        }
+    ?>
 
-						<?php 
-						$res = mysqli_query($db, "SELECT Id, Nume, Prenume, Telefon, CNP, Email, Varsta, Tip	FROM utilizatori WHERE Status = 0 AND Tip != 0");
-						$num_rows = mysqli_num_rows($res);
-						if($num_rows > 0){
-							while($rows = mysqli_fetch_row($res)) {
+    <?php
+      if(count($errors) > 0){
+        echo "<div class='message_wrapper'>";
+        echo "<div class='alert alert-danger alert-dismissible'>";
+        echo "<a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>";
+        echo "<strong>Autentificare nereusita !</strong>";
+        foreach ($errors as $err){
+          echo "<div>".$err."</div>";
+        }
+        echo "</div>";
+        echo "</div>";
+      }
+    ?>
 
-								?> <tr>
-								<?php
-
-								foreach ($rows as $key => $data ){
-									?>
-									<td><?php
-										if($key == 7){
-											if($data == 1){
-												echo "Pacient";
-											}elseif ($data == 2){
-												echo "Doctor";
-											}elseif ($data == 3){
-												echo "Asistent";
-											}else{
-												echo $data;
-											}
-										}else{
-											echo $data;
-										}
-
-									}?></td>
-									<td>
-										<button id='<?php echo $rows[0]; ?>' type='button' class='btn btn-primary' onClick='allowAcc(this.id)'>Permite acces</button>
-										<button id='<?php echo $rows[0]; ?>' type='button' class='btn btn-danger' onClick='deleteAcc(this.id)'>Elimina din lista</button>
-									</td>
-									<?php }
-						}else{?>
-						<tr><td colspan="9" style="text-align: center; font-weight: bold"> Momentan nu exista utilizatori de aprobat !</td></tr>
-									<?php } ?>
-							</tr>				           
-						</tbody>
-					</table>
-				</form>
-
-			</div>
-		</div>
-	</div>
-
-	<script type="text/javascript">
-	function allowAcc(clicked_id)
-	{
-		$.ajax({
-			type: 'POST',
-			url: 'helperUpdate.php',
-			data: { Id:clicked_id},
-			success: function(result){
-				if(result == 'Success')
-					alert('Utilizatorul a primit permisiunile necesare !');
-				else
-					alert('Permisiunile nu au fost acordate !');
-				location.reload();
-			},
-			error: function() {
-				alert('A aparut o eroare !');
-				location.reload();
-			}
-		});
-	}
-
-	function deleteAcc(clicked_id)
-	{
-		$.ajax({
-			type: 'POST',
-			url: 'helperDelete.php',
-			data: { id: clicked_id},
-			success: function(result){
-				if(result == 'Success') {
-					alert('Utilizator a fost sters din sistem!');
-				}
-				else {
-					alert('Stergerea nu a putut fi efectuata! Este posibil ca utilizatorul sa fie deja asociat unei programari sau sa figureze in baza de date cu analize.');
-				}
-				location.reload();
-			},
-			error: function() {
-				alert('A aparut o eroare !');
-				location.reload();
-			}
-		});
-	}
-	</script>
-</body>
+    <div class="login-page">
+      <div class="form">
+        <h2> Autentificare </h2>
+        <form class="login-form" method="post">
+          <input type="text" name="cnp" placeholder="CNP"/>
+          <input type="password" name="parola" placeholder="Parola"/>
+          <button type="submit" class="btn" name="login_user">login</button>
+          <p class="message">Nu aveti cont? <a href="register.php">Creare cont</a></p>
+        </form>
+      </div>
+    </div>
+  </body>
 </html>
