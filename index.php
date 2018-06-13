@@ -106,5 +106,5 @@ $db = mysqli_connect('localhost', 'root', '', 'ehealth');
 		});
 	}
 	</script>
-</body>
+	</body>
 </html>
